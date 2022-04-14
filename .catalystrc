@@ -1,0 +1,29 @@
+{
+  "defaults": {
+    "project": 1,
+    "env": 1
+  },
+  "actives": {
+    "project": 1,
+    "env": 1
+  },
+  "projects": [
+    {
+      "idx": 1,
+      "id": "8728000000022001",
+      "name": "ToDoList",
+      "domain": {
+        "id": "10040488940",
+        "name": "todolist-755509284.development"
+      },
+      "env": [
+        {
+          "idx": 1,
+          "id": "755509284",
+          "name": "Development",
+          "type": 3
+        }
+      ]
+    }
+  ]
+}
