@@ -8,10 +8,12 @@ asyncFunction = async () => {
     let completedHtml = [];
     dataList.forEach(element => {
         if (element.Status == "Pending") {
-            pendingHtml.push('<li id="' + element.ROWID + '">' + element.Task + ' <button id="complete" onclick="taskComplete('+element.ROWID+')">Complete</button> <button id="delete" onclick="taskDelete('+element.ROWID+')">Delete</button></li>');
+            let pendingList = '<li class="list-group-item" id="' + element.ROWID + '"><input class="form-check-input me-1" type="checkbox" value="" aria-label="..." onclick="taskComplete('+element.ROWID+')">' + element.Task + ' <button class="btn btn-outline-danger" id="delete" onclick="taskDelete('+element.ROWID+')">X</button></li>';
+            pendingHtml.push(pendingList);
         }
         else{
-            completedHtml.push('<li id="' + element.ROWID + '">' + element.Task + ' <button id="delete" onclick="taskDelete('+element.ROWID+')">Delete</button></li>');
+            let completeList = '<li class="list-group-item list-group-item-secondary" id="' + element.ROWID + '">' + element.Task + ' <button class="btn btn-outline-danger" id="delete" onclick="taskDelete('+element.ROWID+')">X</button></li>';
+            completedHtml.push(completeList);
         }
        });
     if (pendingHtml.length) {
@@ -36,7 +38,7 @@ asyncFunction = async () => {
         let postTodo = await fetch(url,options); //Ensure that 'to_do_list_function' is the package name of your function
         let rowData = await postTodo.json();
         if (rowData.ROWID != null) {
-            let htmlData = '<li id="' + rowData.ROWID + '">' + rowData.Task + ' <button id="complete" onclick="taskComplete('+rowData.ROWID+')">Complete</button> <button id="delete" onclick="taskDelete('+rowData.ROWID+')">Delete</button></li>';
+            let htmlData = '<li class="list-group-item" id="' + rowData.ROWID + '"><input class="form-check-input me-1" type="checkbox" value="" aria-label="..." onclick="taskComplete('+rowData.ROWID+')">' + rowData.Task + ' <button class="btn btn-outline-danger" id="delete" onclick="taskDelete('+rowData.ROWID+')">X</button></li>';
             $("#ulListPending").append(htmlData);
             $("#task").val(null);
         }
