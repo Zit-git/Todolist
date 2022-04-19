@@ -1,5 +1,6 @@
 {
     "name": "ToDoApp",
     "version": "0.0.1",
-    "homepage": "index.html"
+    "homepage": "new.html",
+    "login_redirect":"index.html"
 }

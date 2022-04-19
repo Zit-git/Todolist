@@ -4,9 +4,10 @@ app.use(express.json()); // This supports the JSON encoded bodies
 var catalyst = require('zcatalyst-sdk-node');
 
 //The GET API gets data from the TodoItems table in the Data Store
-app.get('/todo', function (req, res) {
+app.get('/todo/:userID', function (req, res) {
+	var userID = req.params.userID;
 	var catalystApp = catalyst.initialize(req);
-	getToDoListFromDataStore(catalystApp).then(notes => {
+	getToDoListFromDataStore(catalystApp,userID).then(notes => {
 		let data = notes.map(element => {
 			return {
 				ROWID:element.TodoItems.ROWID,
@@ -19,7 +20,7 @@ app.get('/todo', function (req, res) {
 	).catch(err => {
 		console.log(err);
 		sendErrorResponse(res);
-	})
+	});
 });
 
 //The POST API sends data to persist in the TodoItems table in the Data Store
@@ -80,10 +81,10 @@ app.delete('/todo/:recID', function (req, res) {
 });
 
 //This function executes the ZCQL query to retrieve items from the Data Store
-function getToDoListFromDataStore(catalystApp) {
+function getToDoListFromDataStore(catalystApp,userID) {
 	return new Promise((resolve, reject) => {
 		// Queries the table in the Data Store
-		catalystApp.zcql().executeZCQLQuery("Select * from TodoItems order by createdtime").then(queryResponse => {
+		catalystApp.zcql().executeZCQLQuery("Select * from TodoItems WHERE CREATORID="+userID+" order by createdtime").then(queryResponse => {
 			resolve(queryResponse);
 		}).catch(err => {
 			reject(err);

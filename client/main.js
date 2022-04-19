@@ -1,9 +1,17 @@
 asyncFunction = async () => {
-
+   let userData = await catalyst.auth.isUserAuthenticated().catch(err => {
+        document.body.innerHTML = 'You are not logged in. Please log in to continue. Redirecting you to the login page..';
+        setTimeout(function () {
+            window.location.href = "new.html";
+        }, 5000);
+    });
+    let userID = userData.content.user_id;
+    console.log(userID);
     //Fires the GET API defined in the function on page load
 	// All URLs to the Advanced I/O function will be of the pattern: /server/{function_name}/{url_path}
-    let getTodo = await fetch("/server/to_do_list_function/todo");//Ensure that 'to_do_list_function' is the package name of your function
+    let getTodo = await fetch("/server/to_do_list_function/todo/"+userID);//Ensure that 'to_do_list_function' is the package name of your function
     let dataList = await getTodo.json();
+    console.log(dataList);
     let pendingHtml = [];
     let completedHtml = [];
     dataList.forEach(element => {
@@ -16,7 +24,7 @@ asyncFunction = async () => {
             completedHtml.push(completeList);
         }
        });
-    if (pendingHtml.length) {
+    if (pendingHtml){
     $("#ulListPending").append(pendingHtml);//Appends the items to the HTML from the server on success
     }
     if (completedHtml.length) {
@@ -80,3 +88,12 @@ asyncFunction = async () => {
     }
 }
 asyncFunction();
+ logout = () =>{
+
+    //The signOut method is used to sign the user out of the application
+    // var redirectURL = "https://" + document.domain + "/app/new.html";
+    console.log(window.location.href)
+    // debugger;
+    var auth = catalyst.auth;
+    auth.signOut(window.location.href);
+}
